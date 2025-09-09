@@ -53,7 +53,20 @@ function playGame() {
     console.log("Human:", humanSelection);
     console.log("Computer:", computerSelection);
     playRound(computerSelection, humanSelection);
+    console.log(
+      `Current score = Human ${humanScore}:${computerScore} Computer`,
+    );
     console.log("");
+  }
+  console.log(
+    `The final score is: Human ${humanScore}:${computerScore} Computer`,
+  );
+  if (humanScore > computerScore) {
+    console.log("You won the game!");
+  } else if (humanScore < computerScore) {
+    console.log("You lost the game.");
+  } else if (humanScore === computerScore) {
+    console.log("Its a total tie!");
   }
 }
 
