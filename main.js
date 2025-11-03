@@ -1,3 +1,13 @@
+const resultsContainer = document.querySelector("#results-container");
+
+const winLooseMessage = document.createElement("p");
+winLooseMessage.textContent =
+  "Take your pick and the bot will too. First to five poins wins.";
+resultsContainer.appendChild(winLooseMessage);
+
+const runningScore = document.createElement("p");
+resultsContainer.appendChild(runningScore);
+
 function getComputerChoice() {
   let randNum = Math.floor(Math.random() * 3);
   if (randNum === 0) {
@@ -9,65 +19,72 @@ function getComputerChoice() {
   }
 }
 
-function getHumanChoice() {
-  const input = prompt("Choose by typing rock, paper or scissors: ");
-  return input;
-}
-
 function playGame() {
   let computerScore = 0;
   let humanScore = 0;
 
   function playRound(computerChoice, humanChoice) {
     humanChoice = humanChoice.toLowerCase();
+
     if (computerChoice === "rock" && humanChoice === "paper") {
-      console.log("You win! Paper beats rock");
+      winLooseMessage.textContent = "You win! Paper beats rock";
       humanScore++;
     } else if (computerChoice === "rock" && humanChoice === "scissors") {
-      console.log("You lose! Rock beats scissors");
+      winLooseMessage.textContent = "You lose! Rock beats scissors";
       computerScore++;
     } else if (computerChoice === "rock" && humanChoice === "rock") {
-      console.log("Rock and rock! Its a tie!");
+      winLooseMessage.textContent = "Rock and rock! Its a tie!";
     } else if (computerChoice === "paper" && humanChoice === "scissors") {
-      console.log("You win! Scissors beat paper");
+      winLooseMessage.textContent = "You win! Scissors beat paper";
       humanScore++;
     } else if (computerChoice === "paper" && humanChoice === "rock") {
-      console.log("You lose! Paper beats rock");
+      winLooseMessage.textContent = "You lose! Paper beats rock";
       computerScore++;
     } else if (computerChoice === "paper" && humanChoice === "paper") {
-      console.log("Paper and paper! Its a tie!");
+      winLooseMessage.textContent = "Paper and paper! Its a tie!";
     } else if (computerChoice === "scissors" && humanChoice === "rock") {
-      console.log("You win! Rock beats scissors");
+      winLooseMessage.textContent = "You win! Rock beats scissors";
       humanScore++;
     } else if (computerChoice === "scissors" && humanChoice === "paper") {
-      console.log("You lose! Scissors beat paper");
+      winLooseMessage.textContent = "You lose! Scissors beat paper";
       computerScore++;
     } else if (computerChoice === "scissors" && humanChoice === "scissors") {
-      console.log("Scissors and scissors! Its a tie!");
+      winLooseMessage.textContent = "Scissors and scissors! Its a tie!";
     }
   }
-  for (let i = 1; i < 6; i++) {
-    let humanSelection = getHumanChoice();
+
+  const buttons = document.querySelector("#button-container");
+
+  buttons.addEventListener("click", (event) => {
     let computerSelection = getComputerChoice();
-    console.log("Game Nr.:", i);
-    console.log("Human:", humanSelection);
-    console.log("Computer:", computerSelection);
+    let humanSelection = "";
+
+    switch (event.target.id) {
+      case "rock":
+        humanSelection = "rock";
+        break;
+      case "paper":
+        humanSelection = "paper";
+        break;
+      case "scissors":
+        humanSelection = "scissors";
+        break;
+    }
+
     playRound(computerSelection, humanSelection);
-    console.log(
-      `Current score = Human ${humanScore}:${computerScore} Computer`,
-    );
-    console.log("");
-  }
-  console.log(
-    `The final score is: Human ${humanScore}:${computerScore} Computer`,
-  );
-  if (humanScore > computerScore) {
-    console.log("You won the game!");
-  } else if (humanScore < computerScore) {
-    console.log("You lost the game.");
-  } else if (humanScore === computerScore) {
-    console.log("Its a total tie!");
-  }
+
+    runningScore.textContent = `Current score = Human ${humanScore}:${computerScore} Computer`;
+
+    if (humanScore === 5 || computerScore === 5) {
+      if (humanScore === 5) {
+        winLooseMessage.textContent = "🎉 You won the game!";
+      } else {
+        winLooseMessage.textContent = "💀 You lost the game.";
+      }
+
+      buttons.style.pointerEvents = "none";
+    }
+  });
 }
 
 playGame();
